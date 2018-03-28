@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 CREATE TABLE HasPromotion (
     Store_ID INT,
     Promotion_ID INT,
@@ -23,6 +24,8 @@ CREATE TABLE BuyCoffee(
     CONSTRAINT coffeeidFK FOREIGN KEY (Coffee_ID) REFERENCES Coffee(Coffee_ID)
 );
 =======
+=======
+>>>>>>> 22db012f1eef74d9af168d3dddbab8ecbd9384fb
 create table Store (
 	Store_ID  int,
 	Name	varchar2(20),
@@ -60,4 +63,7 @@ create table MemberLevel(
 );
 
 
+<<<<<<< HEAD
+>>>>>>> 22db012f1eef74d9af168d3dddbab8ecbd9384fb
+=======
 >>>>>>> 22db012f1eef74d9af168d3dddbab8ecbd9384fb
