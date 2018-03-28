@@ -3,8 +3,8 @@ create table Store (
 	Name	varchar2(20),
 	Address varchar2(20),
 	Store_Type varchar2(20),
-	GPS_Long float
-	GPS_Lat float
+	GPS_Long float,
+	GPS_Lat float,
 	Constraint STORE_PK primary key (Store_ID)
 );
 
