@@ -1,3 +1,13 @@
+drop table Store cascade constraints;
+drop table Coffee cascade constraints;
+drop table Promotion cascade constraints;
+drop table MemberLevel cascade constraints;
+drop table Customer cascade constraints;
+drop table Purchase cascade constraints;
+drop table OfferCoffee cascade constraints;
+drop table HasPromotion cascade constraints;
+drop table PromoteFor cascade constraints;
+drop table BuyCoffee cascade constraints;
 
 create table Store (
 	Store_ID  int,
