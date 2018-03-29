@@ -1,0 +1,14 @@
+CREATE OR REPLACE SEQUENCE STORE_SEQ
+	START WITH     1
+	INCREMENT BY   1;
+
+CREATE OR REPLACE TRIGGER STORE_TRIG
+	AFTER INSERT ON Store
+	FOR EACH ROW
+	BEGIN 
+		INSERT INTO Store
+  		VALUES (STORE_SEQ.nextval, :new.Name, :new.Address, :new.Store_Type, :new.GPS_Long, :new.GPS_Lat);
+	END;
+/
+
+
