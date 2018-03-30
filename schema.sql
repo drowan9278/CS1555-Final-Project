@@ -25,16 +25,16 @@ create table Coffee (
 	Description varchar2(20),
 	Intensity int,
 	Price float,
-	Reward_Points floats,
-	Redeem_Points floats,
+	Reward_Points float,
+	Redeem_Points float,
 	Constraint COFFEE_PK primary key (Coffee_ID)
 );
 
 create table Promotion (
 	Promotion_ID int,
 	Name varchar2(20),
-	Start date,
-	End date,
+	Start_Date date,
+	End_Date date,
 	Constraint PROMOTION_PK primary key (Promotion_ID)
 );
 
@@ -84,7 +84,7 @@ CREATE TABLE HasPromotion (
 CREATE TABLE PromoteFor (
     Promotion_ID INT,
     Coffee_ID INT,
-    CONSTRAINT promotePK PRIMARY KEY (Promotion_ID, Coffe_ID),
+    CONSTRAINT promotePK PRIMARY KEY (Promotion_ID, Coffee_ID),
     CONSTRAINT promFK FOREIGN KEY (Promotion_ID) REFERENCES Promotion(Promotion_ID),
     CONSTRAINT coffeeFK FOREIGN KEY (Coffee_ID) REFERENCES Coffee(Coffee_ID)
 );
