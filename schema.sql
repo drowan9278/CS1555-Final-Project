@@ -59,8 +59,8 @@ CREATE TABLE Customer(
 CREATE TABLE Purchase(
 	Purchase_ID int,
 	Customer_ID int,
-	Store_ID,
-	Purchase_Time date
+	Store_ID int,
+	Purchase_Time date,
 	CONSTRAINT PURCHASE_PK PRIMARY KEY (Purchase_ID),
 	CONSTRAINT PURCHASE_CUSTOMER_FK FOREIGN KEY (Customer_ID) REFERENCES Customer(Customer_ID),
 	CONSTRAINT PURCHASE_STORE_FK FOREIGN KEY (Store_ID) REFERENCES Store (Store_ID)
