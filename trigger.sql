@@ -3,7 +3,8 @@ CREATE OR REPLACE TRIGGER trig_BuyCoffee
 	FOR EACH ROW
 	VALUE1 INTEGER,
 	VALUE2 INTEGER,
-	VALUE3 INTEGER
+	VALUE3 INTEGER,
+	VALUE4 INTEGER
 	BEGIN 
 	    --Grab Customer id
 		VALUE1 = (SELECT Customer_ID
@@ -16,12 +17,14 @@ CREATE OR REPLACE TRIGGER trig_BuyCoffee
 		            FROM Customer JOIN MEMBERLEVEL 
 		                on CUSTOMER.MemberLevel_ID = MEMBERLEVEL.MemberLevel_ID
 		            WHERE value1 = customer.customer_ID);
-		 
-		UPDATE CUSTOMER SET TOTAL_POINTS = (value2 * :new.Product_Quantity * value3)
+	    IF(:new.COFFEE_ID IN (SELECT COFFEE_ID FROM PROMOTEFOR)
+	        VALUE4 = 2;
+	    ELSE
+	        VALUE4 = 1;
+	    END IF;
+		UPDATE CUSTOMER SET TOTAL_POINTS = (value2 * :new.Product_Quantity * value3 * value4)
 		WHERE value1 = CUSTOMER_ID;
 		commit;
-		
-		
 	END;
 CREATE OR REPLACE SEQUENCE STORE_SEQ
 	START WITH     1
