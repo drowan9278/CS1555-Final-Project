@@ -9,7 +9,7 @@ CREATE OR REPLACE TRIGGER trig_BuyCoffee
 	    --Grab Customer id
 		VALUE1 = (SELECT Customer_ID
 		            FROM PURCHASE
-		            WHERE :new.Purchase_id = Purchase.id);
+		            WHERE :new.Purchase_id = Purchase.Purchase_id);
 		VALUE2 = (SELECT Rewards_Points
 		            FROM COFFEE
 		            WHERE :new.coffee_id = coffee_id);
@@ -22,10 +22,12 @@ CREATE OR REPLACE TRIGGER trig_BuyCoffee
 	    ELSE
 	        VALUE4 = 1;
 	    END IF;
-		UPDATE CUSTOMER SET TOTAL_POINTS = (value2 * :new.Product_Quantity * value3 * value4)
+		UPDATE CUSTOMER SET TOTAL_POINTS = (value2 * :new.Purchase_Quantity * value3 * value4)
 		WHERE value1 = CUSTOMER_ID;
 		commit;
 	END;
+	       /
+	      
 CREATE OR REPLACE SEQUENCE STORE_SEQ
 	START WITH     1
 	INCREMENT BY   1;
