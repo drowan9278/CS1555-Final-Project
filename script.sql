@@ -83,13 +83,13 @@ insert into Purchase values(1,49,49,to_date('24-FEB-2015 7:00:00','DD-MON-YYYY H
 
 
 
-insert into Coffee(1,'Promoted','Description',1, 2, 1, 1);
-insert into Coffee(1,'NonPromoted','Description',1, 2, 1, 1);
+insert into Coffee values(1,'Promoted','Description',1, 2, 1, 1);
+insert into Coffee values(1,'NonPromoted','Description',1, 2, 1, 1);
 
 
-insert into Promotion(1,"Test_Promotion",to_date('24-FEB-2015 7:00:00','DD-MON-YYYY HH24:MI:SS'), to_date('29-FEB-2015 7:00:00','DD-MON-YYYY HH24:MI:SS') );
+insert into Promotion values(1,"Test_Promotion",to_date('24-FEB-2015 7:00:00','DD-MON-YYYY HH24:MI:SS'), to_date('29-FEB-2015 7:00:00','DD-MON-YYYY HH24:MI:SS') );
 
-insert into HasPromotion(1,1)
-insert into PromoteFor(1,1);
+insert into HasPromotion values(1,1)
+insert into PromoteFor values(1,1);
 
 insert into BuyCoffee values(1,1,10,10);
