@@ -104,7 +104,7 @@ CREATE OR REPLACE TRIGGER trig_BuyCoffee
 		            WHERE value1 = customer.customer_ID;
 		SELECT COUNT(*) INTO VALUE5
 			FROM PROMOTEFOR
-			HAVING COFFEE_ID = :NEW.COFFEE_ID;
+			WHERE COFFEE_ID = :NEW.COFFEE_ID;
 
 	    IF VALUE5 > 0 THEN
 	        VALUE4 := 2;
@@ -113,9 +113,8 @@ CREATE OR REPLACE TRIGGER trig_BuyCoffee
 	    END IF;
 		UPDATE CUSTOMER SET TOTAL_POINTS = TOTAL_POINTS + (value2 * :new.Purchase_Quantity * value3 * value4) - (value2 * :new.Redeem_Quantity)
 		WHERE value1 = CUSTOMER_ID;
-		commit;
 	END;
-	       /
+	/
 
 
 
