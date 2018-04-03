@@ -22,7 +22,7 @@ CREATE OR REPLACE TRIGGER trig_BuyCoffee
 	    ELSE
 	        VALUE4 = 1;
 	    END IF;
-		UPDATE CUSTOMER SET TOTAL_POINTS = (value2 * :new.Purchase_Quantity * value3 * value4)
+		UPDATE CUSTOMER SET TOTAL_POINTS := TOTAL_POINTS + (value2 * :new.Purchase_Quantity * value3 * value4) - (value2 * Redeem_Quantity)
 		WHERE value1 = CUSTOMER_ID;
 		commit;
 	END;
