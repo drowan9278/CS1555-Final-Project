@@ -1,3 +1,28 @@
+CREATE OR REPLACE TRIGGER trig_BuyCoffee
+	AFTER INSERT ON BuyCoffee
+	FOR EACH ROW
+	VALUE1 INTEGER,
+	VALUE2 INTEGER,
+	VALUE3 INTEGER
+	BEGIN 
+	    --Grab Customer id
+		VALUE1 = (SELECT Customer_ID
+		            FROM PURCHASE
+		            WHERE :new.Purchase_id = Purchase.id);
+		VALUE2 = (SELECT Rewards_Points
+		            FROM COFFEE
+		            WHERE :new.coffee_id = coffee_id);
+		VALUE3 = (SELECT Booster_Factor
+		            FROM Customer JOIN MEMBERLEVEL 
+		                on CUSTOMER.MemberLevel_ID = MEMBERLEVEL.MemberLevel_ID
+		            WHERE value1 = customer.customer_ID);
+		 
+		UPDATE CUSTOMER SET TOTAL_POINTS = (value2 * :new.Product_Quantity * value3)
+		WHERE value1 = CUSTOMER_ID;
+		commit;
+		
+		
+	END;
 CREATE OR REPLACE SEQUENCE STORE_SEQ
 	START WITH     1
 	INCREMENT BY   1;
