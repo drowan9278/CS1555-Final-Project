@@ -53,7 +53,8 @@ CREATE TABLE Customer(
 	MemberLevel_ID int,
 	Total_Points float,
 	CONSTRAINT CUSTOMER_PK PRIMARY KEY (Customer_ID),
-	CONSTRAINT CUSTOMER_FK FOREIGN KEY (MemberLevel_ID) REFERENCES MemberLevel(MemberLevel_ID)
+	CONSTRAINT CUSTOMER_FK FOREIGN KEY (MemberLevel_ID) REFERENCES MemberLevel(MemberLevel_ID),
+	CONSTRAINT CUSTOMER_POINTS_CK CHECK (Total_Points >= 0)
 );
 
 CREATE TABLE Purchase(
