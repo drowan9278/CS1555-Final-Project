@@ -4,10 +4,6 @@ DROP SEQUENCE PROMOTION_SEQ;
 DROP SEQUENCE MEMBERLEVEL_SEQ;
 DROP SEQUENCE CUSTOMER_SEQ;
 DROP SEQUENCE PURCHASE_SEQ;
-
-
-
-
 	      
 CREATE SEQUENCE STORE_SEQ
 	START WITH     1
@@ -94,11 +90,9 @@ CREATE OR REPLACE TRIGGER trig_BuyCoffee
 	VALUE3 INT;
 	VALUE4 INT;
 	VALUE5 INT;
-	VALUE6 INT;
-	VALUE7 INTl
 	BEGIN 
 	    --Grab Customer id
-		 SELECT Customer_ID into VALUE1 ,  STORE_ID into VALUE7
+		 SELECT Customer_ID into VALUE1
 		            FROM PURCHASE
 		            WHERE :new.Purchase_id = Purchase.Purchase_id;
 		SELECT Reward_Points into VALUE2
@@ -119,18 +113,8 @@ CREATE OR REPLACE TRIGGER trig_BuyCoffee
 	    END IF;
 		UPDATE CUSTOMER SET TOTAL_POINTS = TOTAL_POINTS + (value2 * :new.Purchase_Quantity * value3 * value4) - (value2 * :new.Redeem_Quantity)
 		WHERE value1 = CUSTOMER_ID;
-		
-		SELECT Coffee_ID into VALUE6;
-		FROM OfferCoffe
-		WHERE Coffe=_ID = :new.coffee_id AND value7 = STORE_ID;
-		
-		IF VALUE6 != :new.coffee_id
-		    DELETE FROM BUYCOFFEE
-		    WHERE :new.coffee_id = coffee_id and purchase_id = :new.purchase_id;
-		   END IF;
 	END;
 	/
-
 
 
 
