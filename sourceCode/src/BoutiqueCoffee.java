@@ -1,11 +1,28 @@
+
+
 import java.util.Date;
 import java.util.List;
+import java.sql.*;
 
 /**
  * This was created for CS1555 Final Project By Arie, Bin , and David
  * Team Number: P25
  */
 public class BoutiqueCoffee {
+
+    private static Connection dbconn;
+    private static String username;
+    private static String  pass;
+    public static void main(String[] args){
+        try {
+            DriverManager.registerDriver (new oracle.jdbc.driver.OracleDriver());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     public int addStore(String name, String address, String storeType, long gpsLong, long gpsLat){
 
         return 0;
