@@ -11,14 +11,48 @@ import java.sql.*;
 public class BoutiqueCoffee {
 
     private static Connection dbconn;
-    private static String username;
-    private static String  pass;
+    private static String username = "dar172";//username
+    private static String  pass = "4149955";//PeopleSoft Number
+    private static Statement statement;
     public static void main(String[] args){
         try {
             DriverManager.registerDriver (new oracle.jdbc.driver.OracleDriver());
+            String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
+
+            dbconn = DriverManager.getConnection(url, username, pass);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+            statement = dbconn.createStatement(); //create an instance
+            String query = "SELECT * FROM Store";
+            ResultSet resultSet = statement.executeQuery(query); //run the query on the DB table
+      /*the results in resultSet have an odd quality.  The first row in result
+      set is not relevant data, but rather a place holder.  This enables us to
+      use a while loop to go through all the records.  We must move the pointer
+      forward once using resultSet.next() or you will get errors*/
+            int counter = 1;
+            while(resultSet.next()) //this not only keeps track of if another record
+            //exists but moves us forward to the first record
+            {
+                System.out.println("Record " + counter + ": " +
+                        resultSet.getString(1) + ", " + //since the first item was of type
+                        //string, we use getString of the
+                        //resultSet class to access it.
+                        //Notice the one, that is the
+                        //position of the answer in the
+                        //resulting table
+                        resultSet.getLong(2) + ", " +   //since second item was number(10),
+                        //we use getLong to access it
+                        resultSet.getDate(3)); //since type date, getDate.
+                counter++;
+                dbconn.close();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
 
     }
