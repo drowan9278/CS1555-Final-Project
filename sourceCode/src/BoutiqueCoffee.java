@@ -11,8 +11,8 @@ import java.sql.*;
 public class BoutiqueCoffee {
 
     private static Connection dbconn;
-    private static String username = "dar172";//username
-    private static String  pass = "4149955";//PeopleSoft Number
+    private static String username = "apd29";//username
+    private static String  pass = "4118451";//PeopleSoft Number
     private static Statement statement;
     public static void main(String[] args){
         try {
@@ -25,7 +25,7 @@ public class BoutiqueCoffee {
         }
         try {
             statement = dbconn.createStatement(); //create an instance
-            String query = "SELECT * FROM Store";
+            String query = "SELECT TABLE_NAME FROM USER_TABLES";
             ResultSet resultSet = statement.executeQuery(query); //run the query on the DB table
       /*the results in resultSet have an odd quality.  The first row in result
       set is not relevant data, but rather a place holder.  This enables us to
@@ -36,16 +36,15 @@ public class BoutiqueCoffee {
             //exists but moves us forward to the first record
             {
                 System.out.println("Record " + counter + ": " +
-                        resultSet.getString(1) + ", " + //since the first item was of type
+                        resultSet.getString(1));//since the first item was of type
                         //string, we use getString of the
                         //resultSet class to access it.
                         //Notice the one, that is the
                         //position of the answer in the
                         //resulting table
-                        resultSet.getLong(2) + ", " +   //since second item was number(10),
-                        //we use getLong to access it
-                        resultSet.getDate(3)); //since type date, getDate.
+
                 counter++;
+
                 dbconn.close();
             }
 
