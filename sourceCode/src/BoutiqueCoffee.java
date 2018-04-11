@@ -32,7 +32,6 @@ public class BoutiqueCoffee {
             String query = "Insert Into Store values(1,'StoreName_TestServer','StoreAddressTest','TestType',0,0)"; //+ name + "','" + address + "','" + storeType + "'," + gpsLong + "," + gpsLat + ");";
             statement.executeQuery(query);
         } catch (SQLException e) {
-            e.printStackTrace();
             return -1;
         }
         return 1;
@@ -70,10 +69,10 @@ public class BoutiqueCoffee {
             String query = "insert into Promotion values(1,'" + name + "',to_date('" + startDate.toString() + "','DD-MON-YYYY HH24:MI:SS'), to_date('" + endDate.toString() + "','DD-MON-YYYY HH24:MI:SS') )";
             statement.execute(query);
         } catch (SQLException e) {
-            e.printStackTrace();
+            return -1;
         }
 
-        return 0;
+        return 1;
     }
 
     public int promoteFor(int promotionId, int coFFeeId) {
@@ -197,24 +196,12 @@ public class BoutiqueCoffee {
             String query = "SELECT * FROM Customer WHERE CUSTOMER_ID = 5"; //sample query one
 
             ResultSet resultSet = statement.executeQuery(query); //run the query on the DB table
-      /*the results in resultSet have an odd quality.  The first row in result
-      set is not relevant data, but rather a place holder.  This enables us to
-      use a while loop to go through all the records.  We must move the pointer
-      forward once using resultSet.next() or you will get errors*/
-
-            while (resultSet.next()) //this not only keeps track of if another record
-            //exists but moves us forward to the first record
+            while (resultSet.next())
             {
                 System.out.println("Record " + counter + ": " +
-                        resultSet.getString(1) + ", " + //since the first item was of type
-                        //string, we use getString of the
-                        //resultSet class to access it.
-                        //Notice the one, that is the
-                        //position of the answer in the
-                        //resulting table
-                        resultSet.getString(2) + ", " +   //since second item was number(10),
-                        //we use getLong to access it
-                        resultSet.getString(6)); //since type date, getDate.
+                        resultSet.getString(1) + ", " +
+                        resultSet.getString(2) + ", " +
+                        resultSet.getString(6));
                 counter++;
             }
         } catch (SQLException e) {
