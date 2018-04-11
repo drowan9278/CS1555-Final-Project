@@ -45,9 +45,9 @@ public class BoutiqueCoffee {
 
                 counter++;
 
-                dbconn.close();
-            }
 
+            }
+            dbconn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
