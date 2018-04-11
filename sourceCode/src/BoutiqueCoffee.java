@@ -14,7 +14,7 @@ public class BoutiqueCoffee {
     private static String username = "apd29";//username
     private static String  pass = "4118451";//PeopleSoft Number
     private static Statement statement;
-    public static void main(String[] args){
+    public static void BoutiqueCoffee(){
         try {
             DriverManager.registerDriver (new oracle.jdbc.driver.OracleDriver());
             String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
@@ -23,58 +23,54 @@ public class BoutiqueCoffee {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        try {
-            statement = dbconn.createStatement(); //create an instance
-            String query = "SELECT TABLE_NAME FROM USER_TABLES";
-            ResultSet resultSet = statement.executeQuery(query); //run the query on the DB table
-      /*the results in resultSet have an odd quality.  The first row in result
-      set is not relevant data, but rather a place holder.  This enables us to
-      use a while loop to go through all the records.  We must move the pointer
-      forward once using resultSet.next() or you will get errors*/
-            int counter = 1;
-            while(resultSet.next()) //this not only keeps track of if another record
-            //exists but moves us forward to the first record
-            {
-                System.out.println("Record " + counter + ": " +
-                        resultSet.getString(1));//since the first item was of type
-                        //string, we use getString of the
-                        //resultSet class to access it.
-                        //Notice the one, that is the
-                        //position of the answer in the
-                        //resulting table
-
-                counter++;
-
-
-            }
-            dbconn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-
     }
 
     public int addStore(String name, String address, String storeType, long gpsLong, long gpsLat){
-
+        try {
+            statement = dbconn.createStatement();
+            String query = "insert into Store values(1,'"+ name+"','"+address+"','"+storeType+"',"+ gpsLong+","+gpsLat+");";
+            statement.execute(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 
 
     public int addCoffee(String name, String description, int intensity, double rewardPoints, double redeemPoints)
     {
+        try {
+            statement = dbconn.createStatement();
+            String query = "insert into Store values(1,'"+ name+"','"+description+"',"+intensity+","+ rewardPoints+","+redeemPoints+");";
+            statement.execute(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        return intensity;
+
+        return 0;
     }
 
     public int offerCoffee(int storeId, int coffeeId)
     {
-
+        try {
+            statement = dbconn.createStatement();
+            String query = "insert into Store values("+storeId+"," + coffeeId + ");";
+            statement.execute(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return storeId;
     }
 
     public int addPromotion(String name, Date startDate, Date endDate){
+        try {
+            statement = dbconn.createStatement();
+            String query = "insert into Store values(1,'"+name+"',to_date('"+startDate.toString()+"','DD-MON-YYYY HH24:MI:SS'), to_date('"+startDate.toString()+"','DD-MON-YYYY HH24:MI:SS') );";
+            statement.execute(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return 0;
     }
@@ -125,6 +121,9 @@ public class BoutiqueCoffee {
     public List<Integer> getTopKCustomersInPastXMonth(int k, int x){
 
         return null;
+    }
+    public static void main(String[] args){
+
     }
 }
 
