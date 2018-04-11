@@ -157,9 +157,19 @@ public class BoutiqueCoffee {
         return null;
     }
 
-    public double getPointsByCustomerId(int customerId) {
+    public double getPointsByCustomerId(int customerId) throws SQLException {
+        ResultSet results = null;
+        try {
+            statement = dbconn.createStatement();
+            String query = "SELECT TOTAL_POINTS FROM CUSTOMER WHERE Customer_id = "+customerId;
+            results = statement.executeQuery(query);
+        } catch (SQLException e) {
+            return -1;
+        }
+        if(results.next())
+            return results.getInt(1);
+        return -1 ;
 
-        return 0;
     }
 
     public List<Integer> getTopKStoresInPastXMonth(int k, int x) {
@@ -174,12 +184,17 @@ public class BoutiqueCoffee {
 
     public static void main(String[] args) {
         BoutiqueCoffee db = new BoutiqueCoffee();
-        if(db.addStore("Storee", "42 sql lane", "bigStore", 4567, 6788) == -1)
-            System.out.println("FAIL");
+        try {
+            if(db.getPointsByCustomerId(3) == -1) System.out.println("FAIL");
+            else
+                System.out.println("PASS");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         try {
             int counter = 1;
             statement = dbconn.createStatement(); //create an instance
-            String query = "SELECT * FROM Store"; //sample query one
+            String query = "SELECT * FROM Customer WHERE CUSTOMER_ID = 5"; //sample query one
 
             ResultSet resultSet = statement.executeQuery(query); //run the query on the DB table
       /*the results in resultSet have an odd quality.  The first row in result
@@ -199,7 +214,7 @@ public class BoutiqueCoffee {
                         //resulting table
                         resultSet.getString(2) + ", " +   //since second item was number(10),
                         //we use getLong to access it
-                        resultSet.getString(3)); //since type date, getDate.
+                        resultSet.getString(6)); //since type date, getDate.
                 counter++;
             }
         } catch (SQLException e) {
