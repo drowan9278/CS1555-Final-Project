@@ -122,15 +122,34 @@ public class BoutiqueCoffee {
         }
         return 1;
     }
-
+    //Needs a function to return the auto generater ID
     public int addPurchase(int customerId, int storeId, Date purchaseTime, List<Integer> coffeeIds, List<Integer> purchaseQuantities, List<Integer> redeemQuantities) {
-
-        return customerId;
+        try {
+            statement = dbconn.createStatement();
+            //String query = "Insert Into Purchase values(1,"+ coffeeId + "','" + address + "','" + storeType + "'," + gpsLong + "," + gpsLat + ");";
+           // statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+        return 1;
     }
 
     public List<Integer> getCoffees() {
+        List<Integer> coffees = null;
+        try {
+            statement = dbconn.createStatement();
+            String query = "SELECT coffee_id FROM COFFEE";
+            ResultSet results = statement.executeQuery(query);
+            while(results.next()){
+                coffees.add(results.getInt(1));
+            }
+        } catch (SQLException e) {
 
-        return null;
+            return coffees;
+        }
+        return coffees;
+
     }
 
     public List<Integer> getCoffeesByKeywords(String keyword1, String keyword2) {
