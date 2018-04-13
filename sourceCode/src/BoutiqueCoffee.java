@@ -1,5 +1,9 @@
 
 
+import oracle.jdbc.OracleCallableStatement;
+import oracle.jdbc.OracleType;
+import oracle.jdbc.OracleTypes;
+
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.xml.transform.Result;
 import java.text.DateFormat;
@@ -215,18 +219,28 @@ public class BoutiqueCoffee {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             cal.add(Calendar.MONTH,-x);
+            dbconn.setAutoCommit(false);
+
             statement = dbconn.createStatement();
+
             DateFormat df = new SimpleDateFormat("dd-MMM-YYYY HH:mm:ss");
             Date d = cal.getTime();//intialize your date to any date
             Date dateBefore = new Date(d.getTime() - x * 24 * 3600 * 1000  );
             String query = "CREATE OR REPLACE VIEW CUST_RANK (CUSTOMER_ID, TOTAL) AS SELECT CUSTOMER_ID, SUM(TOTAL) AS TOTAL FROM (SELECT (CO.PRICE*B.PURCHASE_QUANTITY) AS TOTAL, C.CUSTOMER_ID AS CUSTOMER_ID FROM CUSTOMER C JOIN PURCHASE P ON C.CUSTOMER_ID=P.CUSTOMER_ID JOIN BUYCOFFEE B ON B.PURCHASE_ID = P.PURCHASE_ID JOIN COFFEE CO ON CO.COFFEE_ID = B.COFFEE_ID WHERE B.PURCHASE_QUANTITY>0 AND P.PURCHASE_TIME>to_date('"+df.format(d)+"','DD-MON-YYYY HH24:MI:SS')) GROUP BY CUSTOMER_ID ORDER BY TOTAL DESC";
             statement.executeQuery(query);
+            statement.setFetchSize(50);
 
-            ResultSet resultSet = statement.executeQuery("SELECT CUSTOMER_SPENT("+k+") FROM DUAL ");
+            ResultSet resultSet;
+            CallableStatement stmt = dbconn.prepareCall("BEGIN customer_spent(?,?); END;");
+            stmt.setInt(1,0);
 
-            while(resultSet.next()){
-               System.out.println( resultSet.getMetaData());
-            }
+            stmt.registerOutParameter(2, OracleTypes.CURSOR);
+            stmt.execute();
+            resultSet= ((OracleCallableStatement)stmt).getCursor(2);
+            resultSet.next();
+            do{
+               System.out.println( resultSet.getInt("CUSTOMER_ID"));
+            }while((resultSet.next()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
