@@ -1,7 +1,9 @@
+-- We are no longer using functions. this file is for reference only.
+
 CREATE OR REPLACE PROCEDURE CUSTOMER_SPENT(K IN INT, CUR OUT SYS_REFCURSOR)
 IS
 BEGIN
-	
+
 	OPEN CUR FOR SELECT CUSTOMER_ID
 		FROM
 			(SELECT S.CUSTOMER_ID, 1+ (SELECT COUNT(*) FROM CUST_RANK T WHERE T.TOTAL>S.TOTAL) AS RANK
@@ -29,7 +31,7 @@ CREATE OR REPLACE function get_price_for_store(K in int)
 		*/
 
 			OPEN CUR FOR
-			SELECT S.StoreID 
+			SELECT S.StoreID
 			FROM (
 					SELECT S.StoreID, (1 + (SELECT COUNT(*) FROM SALES E WHERE E.Total > S.Total)) AS Rank
 					FROM SALES S)
