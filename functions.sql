@@ -13,7 +13,7 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE function get_price_for_store(specific_date in date)
+CREATE OR REPLACE function get_price_for_store(K in int)
 	return SYS_REFCURSOR
 	AS
 	CUR SYS_REFCURSOR;
@@ -26,14 +26,17 @@ CREATE OR REPLACE function get_price_for_store(specific_date in date)
 						FROM PURCHASE P
 						JOIN BUYCOFFEE BC ON P.Purchase_ID = BC.Purchase_ID
 						JOIN COFFEE C ON BC.COFFEE_ID = C.COFFEE_ID
-						WHERE BC.Purchase_Quantity > 0)
+						WHERE BC.Purchase_Quantity > 0 AND P.Purchase_Time > to_date('',''))
 					GROUP BY Store_ID
 					ORDER BY TOTAL DESC;
 		*/
 
 			OPEN CUR FOR
-			SELECT S.StoreID, (1 + (SELECT COUNT(*) FROM SALES E WHERE E.Total > S.Total)) AS Rank
-			FROM SALES S;
+			SELECT S.StoreID 
+			FROM (
+					SELECT S.StoreID, (1 + (SELECT COUNT(*) FROM SALES E WHERE E.Total > S.Total)) AS Rank
+					FROM SALES S)
+			WHERE RANK >= K;
 			return CUR;
 	END;
 /
