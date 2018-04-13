@@ -15,7 +15,7 @@ public class BCbenchmark {
     public static void main(String[] args){
         BoutiqueCoffee db = new BoutiqueCoffee();
         //addCoffees
-        for(int x = 0; x<20;x++){
+        for(int x = 0; x<21;x++){
             int val = db.addCoffee("Coffee"+x,"Number: "+x,x,x*3.2,2 + x/10,10);
             assert (val ==1);
         }
@@ -29,14 +29,14 @@ public class BCbenchmark {
             assert(val == 1);
         }
         for(int x = 0; x<20;x++){
-            int val = db.addCustomer("Name#"+x,"LastName#"+x,x+"@gmail.com",1,x);
+            int val = db.addCustomer("Name#"+x,"LastName#"+x,x+"@gmail.com",1,x +1);
 
         }
         List<Integer> coffeeids = new ArrayList<>();
         List<Integer> quantity = new ArrayList<>();
         List<Integer> redeem = new ArrayList<>();
         for(int x =0; x<20;x++){
-            coffeeids.add(x);
+            coffeeids.add(x+1);
             quantity.add(x);
             redeem.add(1);
         }
@@ -48,7 +48,7 @@ public class BCbenchmark {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            db.addPurchase(x,x,date,coffeeids,quantity,redeem);
+            db.addPurchase(x+1,x+1,date,coffeeids,quantity,redeem);
         }
 
     }

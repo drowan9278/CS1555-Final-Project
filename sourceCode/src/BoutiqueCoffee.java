@@ -25,6 +25,7 @@ public class BoutiqueCoffee {
             String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
 
             dbconn = DriverManager.getConnection(url, username, pass);
+            dbconn.setAutoCommit(true);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -33,9 +34,10 @@ public class BoutiqueCoffee {
     public int addStore(String name, String address, String storeType, long gpsLong, long gpsLat) {
         try {
             statement = dbconn.createStatement();
-            String query = "Insert Into Store values(1:"+ name + "','" + address + "','" + storeType + "'," + gpsLong + "," + gpsLat + ");";
+            String query = "Insert Into Store values(1,'"+ name + "','" + address + "','" + storeType + "'," + gpsLong + "," + gpsLat + ")";
             statement.executeQuery(query);
         } catch (SQLException e) {
+            e.printStackTrace();
             return -1;
         }
         return 1;
@@ -105,9 +107,10 @@ public class BoutiqueCoffee {
     public int addMemberLevel(String name, double boosterFactor) {
         try {
             statement = dbconn.createStatement();
-            String query = "insert into MemberLevel values(1,"+ name+" , " + boosterFactor +" )";
+            String query = "insert into MemberLevel values(1,'"+ name+"' , " + boosterFactor +" )";
             statement.execute(query);
         } catch (SQLException e) {
+            e.printStackTrace();
             return -1;
         }
         return 1;
@@ -120,7 +123,7 @@ public class BoutiqueCoffee {
         try {
             statement = dbconn.createStatement();
             String query = "insert into Customer values(1,'"+ FirstName+"' , '" + lastName +"','"+email+"' , " + memberLevelId+","+totalPoints+" )";
-            statement.execute(query);
+            statement.executeQuery(query);
             ResultSet results = statement.executeQuery("SELECT CUSTOMER_SEQ.currval from DUAL");
             results.next();
             return results.getInt(1);
