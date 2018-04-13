@@ -28,10 +28,10 @@ public class BCbenchmark {
             int val = db.addStore("Store#"+x,x+" test Lane","Large", (x+1)*7, (x+4)*3);
             assert(val == 1);
         }
-        for(int x = 0; x<20;x++){
-            int val = db.addCustomer("Name#"+x,"LastName#"+x,x+"@gmail.com",1,x +1);
-
-        }
+//        for(int x = 0; x<20;x++){
+//            int val = db.addCustomer("Name#"+x,"LastName#"+x,x+"@gmail.com",1,x +1);
+//
+//        }
         List<Integer> coffeeids = new ArrayList<>();
         List<Integer> quantity = new ArrayList<>();
         List<Integer> redeem = new ArrayList<>();

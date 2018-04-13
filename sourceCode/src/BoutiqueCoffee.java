@@ -1,8 +1,10 @@
 
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.xml.transform.Result;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -155,9 +157,12 @@ public class BoutiqueCoffee {
         } catch (SQLException e) {
             try {
                 dbconn.rollback();
+                e.printStackTrace();
             } catch (SQLException e1) {
+                e.printStackTrace();
                 return -1;
             }
+            e.printStackTrace();
             return -1;
         }
         return 1;
@@ -206,37 +211,32 @@ public class BoutiqueCoffee {
     }
 
     public List<Integer> getTopKCustomersInPastXMonth(int k, int x) {
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.MONTH,-x);
+            statement = dbconn.createStatement();
+            DateFormat df = new SimpleDateFormat("dd-MMM-YYYY HH:mm:ss");
+            Date d = cal.getTime();//intialize your date to any date
+            Date dateBefore = new Date(d.getTime() - x * 24 * 3600 * 1000  );
+            String query = "CREATE OR REPLACE VIEW CUST_RANK (CUSTOMER_ID, TOTAL) AS SELECT CUSTOMER_ID, SUM(TOTAL) AS TOTAL FROM (SELECT (CO.PRICE*B.PURCHASE_QUANTITY) AS TOTAL, C.CUSTOMER_ID AS CUSTOMER_ID FROM CUSTOMER C JOIN PURCHASE P ON C.CUSTOMER_ID=P.CUSTOMER_ID JOIN BUYCOFFEE B ON B.PURCHASE_ID = P.PURCHASE_ID JOIN COFFEE CO ON CO.COFFEE_ID = B.COFFEE_ID WHERE B.PURCHASE_QUANTITY>0 AND P.PURCHASE_TIME>to_date('"+df.format(d)+"','DD-MON-YYYY HH24:MI:SS')) GROUP BY CUSTOMER_ID ORDER BY TOTAL DESC";
+            statement.executeQuery(query);
+
+            ResultSet resultSet = statement.executeQuery("SELECT CUSTOMER_SPENT("+k+") FROM DUAL ");
+
+            while(resultSet.next()){
+               System.out.println( resultSet.getMetaData());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return null;
     }
 
     public static void main(String[] args) {
         BoutiqueCoffee db = new BoutiqueCoffee();
-        try {
-            if(db.getPointsByCustomerId(3) == -1) System.out.println("FAIL");
-            else
-                System.out.println("PASS");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            int counter = 1;
-            statement = dbconn.createStatement(); //create an instance
-            String query = "SELECT * FROM Customer WHERE CUSTOMER_ID = 5"; //sample query one
-
-            ResultSet resultSet = statement.executeQuery(query); //run the query on the DB table
-            while (resultSet.next())
-            {
-                System.out.println("Record " + counter + ": " +
-                        resultSet.getString(1) + ", " +
-                        resultSet.getString(2) + ", " +
-                        resultSet.getString(6));
-                counter++;
-            }
-            System.out.println("Customer ID: "+db.addCustomer("David","Rowan","tt@g",1,0));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        db.getTopKCustomersInPastXMonth(2,78);
     }
 }
 
