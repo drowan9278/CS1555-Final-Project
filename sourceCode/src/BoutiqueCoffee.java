@@ -232,7 +232,7 @@ public class BoutiqueCoffee {
 
             ResultSet resultSet;
             CallableStatement stmt = dbconn.prepareCall("BEGIN customer_spent(?,?); END;");
-            stmt.setInt(1,0);
+            stmt.setInt(1,k);
 
             stmt.registerOutParameter(2, OracleTypes.CURSOR);
             stmt.execute();
