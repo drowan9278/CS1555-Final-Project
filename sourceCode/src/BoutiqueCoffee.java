@@ -1,6 +1,8 @@
 
 
+import javax.xml.transform.Result;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.sql.*;
 
@@ -29,7 +31,7 @@ public class BoutiqueCoffee {
     public int addStore(String name, String address, String storeType, long gpsLong, long gpsLat) {
         try {
             statement = dbconn.createStatement();
-            String query = "Insert Into Store values(1,'StoreName_TestServer','StoreAddressTest','TestType',0,0)"; //+ name + "','" + address + "','" + storeType + "'," + gpsLong + "," + gpsLat + ");";
+            String query = "Insert Into Store values(1:"+ name + "','" + address + "','" + storeType + "'," + gpsLong + "," + gpsLat + ");";
             statement.executeQuery(query);
         } catch (SQLException e) {
             return -1;
@@ -116,18 +118,42 @@ public class BoutiqueCoffee {
             statement = dbconn.createStatement();
             String query = "insert into Customer values(1,'"+ FirstName+"' , '" + lastName +"','"+email+"' , " + memberLevelId+","+totalPoints+" )";
             statement.execute(query);
+            ResultSet results = statement.executeQuery("SELECT CUSTOMER_SEQ.currval from DUAL");
+            results.next();
+            return results.getInt(1);
         } catch (SQLException e) {
+            e.printStackTrace();
             return -1;
         }
-        return 1;
+
     }
     //Needs a function to return the auto generater ID
     public int addPurchase(int customerId, int storeId, Date purchaseTime, List<Integer> coffeeIds, List<Integer> purchaseQuantities, List<Integer> redeemQuantities) {
         try {
+            dbconn.setAutoCommit(false);
+            Iterator it = coffeeIds.iterator();
             statement = dbconn.createStatement();
-            //String query = "Insert Into Purchase values(1,"+ coffeeId + "','" + address + "','" + storeType + "'," + gpsLong + "," + gpsLat + ");";
-           // statement.executeQuery(query);
+            String query = "INSERT INTO PURCHASE VALUES(1,"+customerId+","+storeId+",'"+purchaseTime.toString()+"')";
+            int purchaseID;
+            statement.executeQuery(query);
+            ResultSet id = statement.executeQuery("SELECT PURCHASE_SEQ.currval FROM DUAL");
+            id.next();
+            purchaseID = id.getInt(1);
+            Iterator coffeeIDs = coffeeIds.iterator();
+            Iterator purchaseAmt = purchaseQuantities.iterator();
+            Iterator redeem = redeemQuantities.iterator();
+            while(coffeeIDs.hasNext()){
+                query = "INSERT INTO BUYCOFFEE VALUES("+ purchaseID+","+coffeeIDs.next()+","+purchaseAmt.next()+","+redeem.next()+")";
+                statement.executeQuery(query);
+            }
+            dbconn.commit();
+            dbconn.setAutoCommit(true);
         } catch (SQLException e) {
+            try {
+                dbconn.rollback();
+            } catch (SQLException e1) {
+                return -1;
+            }
             e.printStackTrace();
             return -1;
         }
@@ -204,6 +230,7 @@ public class BoutiqueCoffee {
                         resultSet.getString(6));
                 counter++;
             }
+            System.out.println("Customer ID: "+db.addCustomer("David","Rowan","tt@g",1,0));
         } catch (SQLException e) {
             e.printStackTrace();
         }
