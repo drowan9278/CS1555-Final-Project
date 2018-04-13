@@ -37,7 +37,6 @@ public class BoutiqueCoffee {
             String query = "Insert Into Store values(1,'"+ name + "','" + address + "','" + storeType + "'," + gpsLong + "," + gpsLat + ")";
             statement.executeQuery(query);
         } catch (SQLException e) {
-            e.printStackTrace();
             return -1;
         }
         return 1;
@@ -110,7 +109,6 @@ public class BoutiqueCoffee {
             String query = "insert into MemberLevel values(1,'"+ name+"' , " + boosterFactor +" )";
             statement.execute(query);
         } catch (SQLException e) {
-            e.printStackTrace();
             return -1;
         }
         return 1;
@@ -128,7 +126,6 @@ public class BoutiqueCoffee {
             results.next();
             return results.getInt(1);
         } catch (SQLException e) {
-            e.printStackTrace();
             return -1;
         }
 
@@ -161,7 +158,6 @@ public class BoutiqueCoffee {
             } catch (SQLException e1) {
                 return -1;
             }
-            e.printStackTrace();
             return -1;
         }
         return 1;
