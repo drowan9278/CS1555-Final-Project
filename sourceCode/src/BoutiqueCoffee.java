@@ -1,6 +1,8 @@
 
 
 import javax.xml.transform.Result;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -13,8 +15,8 @@ import java.sql.*;
 public class BoutiqueCoffee {
 
     private static Connection dbconn;
-    private static String username = "apd29";//username
-    private static String pass = "4118451";//PeopleSoft Number
+    private static String username = "DAR172";//username
+    private static String pass = "4149955";//PeopleSoft Number
     private static Statement statement;
 
     public BoutiqueCoffee() {
@@ -134,7 +136,8 @@ public class BoutiqueCoffee {
             dbconn.setAutoCommit(false);
             Iterator it = coffeeIds.iterator();
             statement = dbconn.createStatement();
-            String query = "INSERT INTO PURCHASE VALUES(1,"+customerId+","+storeId+",'"+purchaseTime.toString()+"')";
+            DateFormat df = new SimpleDateFormat("dd-MMM-YYYY HH:mm:ss");
+            String query = "INSERT INTO PURCHASE VALUES(1,"+customerId+","+storeId+",to_date('"+df.format(purchaseTime)+"','DD-MON-YYYY HH24:MI:SS'))";
             int purchaseID;
             statement.executeQuery(query);
             ResultSet id = statement.executeQuery("SELECT PURCHASE_SEQ.currval FROM DUAL");

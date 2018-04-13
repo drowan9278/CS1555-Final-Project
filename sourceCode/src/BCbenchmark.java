@@ -1,5 +1,8 @@
 import oracle.sql.TIMESTAMP;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,7 +30,7 @@ public class BCbenchmark {
         }
         for(int x = 0; x<20;x++){
             int val = db.addCustomer("Name#"+x,"LastName#"+x,x+"@gmail.com",1,x);
-            assert (val==1);
+
         }
         List<Integer> coffeeids = new ArrayList<>();
         List<Integer> quantity = new ArrayList<>();
@@ -38,7 +41,14 @@ public class BCbenchmark {
             redeem.add(1);
         }
         for(int x = 0;x<5;x++){
-            db.addPurchase(x,x, new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime(),coffeeids,quantity,redeem);
+            Date date = null;
+            DateFormat df = new SimpleDateFormat("dd-MMM-YYYY HH:mm:ss");
+            try {
+                 date = df.parse(x+"-FEB-2015 7:00:00");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            db.addPurchase(x,x,date,coffeeids,quantity,redeem);
         }
 
     }
