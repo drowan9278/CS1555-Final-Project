@@ -40,12 +40,13 @@ public class BoutiqueCoffee {
     }
 
 
-    public int addCoffee(String name, String description, int intensity, double rewardPoints, double redeemPoints) {
+    public int addCoffee(String name, String description, int intensity,double price, double rewardPoints, double redeemPoints) {
         try {
             statement = dbconn.createStatement();
-            String query = "insert into Coffee values(1,'" + name + "','" + description + "'," + intensity + "," + rewardPoints + "," + redeemPoints + ")";
+            String query = "insert into Coffee values(1,'" + name + "','" + description + "'," + intensity + ","+price+"," + rewardPoints + "," + redeemPoints + ")";
             statement.executeQuery(query);
         } catch (SQLException e) {
+
             return -1;
         }
 
