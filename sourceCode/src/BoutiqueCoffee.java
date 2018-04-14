@@ -1,5 +1,3 @@
-
-
 import oracle.jdbc.OracleCallableStatement;
 import oracle.jdbc.OracleType;
 import oracle.jdbc.OracleTypes;
@@ -16,7 +14,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
- * This was created for CS1555 Final Project By Arie, Bin , and David
+ * This was created for CS1555 Final Project By Arie, Bin, and David
  * Team Number: P25
  */
 public class BoutiqueCoffee {
@@ -38,32 +36,46 @@ public class BoutiqueCoffee {
 		}
 	}
 
+	//@return the auto-generated ID of this store or -1 if the operation is not possible or failed
 	public int addStore(String name, String address, String storeType, long gpsLong, long gpsLat) {
 		try {
-			statement = dbconn.createStatement();
 			String query = "Insert Into Store values(1,'"+ name + "','" + address + "','" + storeType + "'," + gpsLong + "," + gpsLat + ")";
-			statement.executeQuery(query);
+			String returnID[] = { "Store_ID" };
+			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
+			ps.execute();
+			ResultSet result = ps.getGeneratedKeys();
+			if(result.next()){
+				System.out.println(result.getInt(1));
+				return result.getInt(1);
+			}
 		} catch (SQLException e) {
-			return -1;
+			System.out.println(e);
 		}
-		return 1;
+		return -1;
 	}
 
-
+	//@return the auto-generated ID of this coffee or -1 if the operation is not possible or failed
 	public int addCoffee(String name, String description, int intensity,double price, double rewardPoints, double redeemPoints) {
 		try {
-			statement = dbconn.createStatement();
 			String query = "insert into Coffee values(1,'" + name + "','" + description + "'," + intensity + ","+price+"," + rewardPoints + "," + redeemPoints + ")";
-			statement.executeQuery(query);
+			String returnID[] = { "Coffee_ID" };
+			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
+			ps.execute();
+			ResultSet result = ps.getGeneratedKeys();
+			if(result.next()){
+				System.out.println(result.getInt(1));
+				return result.getInt(1);
+			}
 		} catch (SQLException e) {
-
-			return -1;
+			System.out.println(e);
 		}
 
 
-		return 1;
+		return -1;
 	}
 
+	//@return 1 if the operation succeeded or -1 if the operation is not possible or failed
+	//Did not test
 	public int offerCoffee(int storeId, int coffeeId) {
 		try {
 			statement = dbconn.createStatement();
@@ -76,18 +88,29 @@ public class BoutiqueCoffee {
 		return 1;
 	}
 
+	//@return the auto-generated ID of this promotion or -1 if the operation is not possible or failed
 	public int addPromotion(String name, Date startDate, Date endDate) {
 		try {
-			statement = dbconn.createStatement();
-			String query = "insert into Promotion values(1,'" + name + "',to_date('" + startDate.toString() + "','DD-MON-YYYY HH24:MI:SS'), to_date('" + endDate.toString() + "','DD-MON-YYYY HH24:MI:SS') )";
-			statement.execute(query);
+			DateFormat df = new SimpleDateFormat("dd-MMM-YYYY HH:mm:ss");
+			String query = "insert into Promotion values(1,'" + name + "',to_date('" + df.format(startDate) + "','DD-MON-YYYY HH24:MI:SS'), to_date('" + df.format(endDate) + "','DD-MON-YYYY HH24:MI:SS') )";
+			String returnID[] = { "Promotion_ID" };
+			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
+			ps.execute();
+			ResultSet result = ps.getGeneratedKeys();
+			System.out.println("Here");
+			if(result.next()) {
+				System.out.println(result.getInt(1));
+				return result.getInt(1);
+			}
 		} catch (SQLException e) {
-			return -1;
+			System.out.println(e);
 		}
 
-		return 1;
+		return -1;
 	}
 
+	//Did not test
+	//@return 1 if the operation succeeded or -1 if the operation is not possible or failed
 	public int promoteFor(int promotionId, int coFFeeId) {
 		try {
 			statement = dbconn.createStatement();
@@ -99,6 +122,8 @@ public class BoutiqueCoffee {
 		return 1;
 	}
 
+	//Did not test
+	//@return 1 if the operation succeeded or -1 if the operation is not possible or failed
 	public int hasPromotion(int storeId, int promotionId) {
 		try {
 			statement = dbconn.createStatement();
@@ -110,34 +135,49 @@ public class BoutiqueCoffee {
 		return 1;
 	}
 
+	//@return the auto-generated ID of this member level or -1 if the operation is not possible or failed
 	public int addMemberLevel(String name, double boosterFactor) {
 		try {
-			statement = dbconn.createStatement();
 			String query = "insert into MemberLevel values(1,'"+ name+"' , " + boosterFactor +" )";
-			statement.execute(query);
+			String returnID[] = { "MemberLevel_ID" };
+			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
+			ps.execute();
+			ResultSet result = ps.getGeneratedKeys();
+			if(result.next()){
+				System.out.println(result.getInt(1));
+				return result.getInt(1);
+			}
 		} catch (SQLException e) {
-			return -1;
+			System.out.println(e);
 		}
-		return 1;
+		return -1;
 
 
 	}
 
+	//@return the auto-generated ID of this customer or -1 if the operation is not possible or failed
 	public int addCustomer(String FirstName, String lastName, String email, int memberLevelId, double totalPoints) {
-
 		try {
-			statement = dbconn.createStatement();
 			String query = "insert into Customer values(1,'"+ FirstName+"' , '" + lastName +"','"+email+"' , " + memberLevelId+","+totalPoints+" )";
-			statement.executeQuery(query);
-			ResultSet results = statement.executeQuery("SELECT CUSTOMER_SEQ.currval from DUAL");
-			results.next();
-			return results.getInt(1);
+			String returnID[] = { "Customer_ID" };
+			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
+			ps.execute();
+			ResultSet result = ps.getGeneratedKeys();
+			if(result.next()) {
+				System.out.println(result.getInt(1));
+				return result.getInt(1);
+			}
 		} catch (SQLException e) {
-			return -1;
+			System.out.println(e);
 		}
+		return -1;
 
 	}
-	//Needs a function to return the auto generater ID
+
+	//@return the auto-generated ID of this purchase or -1 if the operation is not possible or failed
+
+	//Probably need testing after I modified the auto-generated ID in this method?? The ID thats generated should work without fail though.
+
 	public int addPurchase(int customerId, int storeId, Date purchaseTime, List<Integer> coffeeIds, List<Integer> purchaseQuantities, List<Integer> redeemQuantities) {
 		try {
 			dbconn.setAutoCommit(false);
@@ -145,11 +185,25 @@ public class BoutiqueCoffee {
 			statement = dbconn.createStatement();
 			DateFormat df = new SimpleDateFormat("dd-MMM-YYYY HH:mm:ss");
 			String query = "INSERT INTO PURCHASE VALUES(1,"+customerId+","+storeId+",to_date('"+df.format(purchaseTime)+"','DD-MON-YYYY HH24:MI:SS'))";
-			int purchaseID;
-			statement.executeQuery(query);
-			ResultSet id = statement.executeQuery("SELECT PURCHASE_SEQ.currval FROM DUAL");
-			id.next();
-			purchaseID = id.getInt(1);
+			int purchaseID=0;
+
+			//Old Code:
+				/* statement.executeQuery(query);
+				ResultSet id = statement.executeQuery("SELECT PURCHASE_SEQ.currval FROM DUAL");
+				id.next();
+				purchaseID = id.getInt(1);
+				*/
+
+			//Newer Code that has one less query
+			String returnID[] = { "Purchase_ID" };
+			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
+			ps.execute();
+			ResultSet result = ps.getGeneratedKeys();
+			if(result.next()) {
+				System.out.println(result.getInt(1));
+				purchaseID = result.getInt(1);
+			}
+
 			Iterator coffeeIDs = coffeeIds.iterator();
 			Iterator purchaseAmt = purchaseQuantities.iterator();
 			Iterator redeem = redeemQuantities.iterator();
@@ -159,6 +213,9 @@ public class BoutiqueCoffee {
 			}
 			dbconn.commit();
 			dbconn.setAutoCommit(true);
+
+			return purchaseID;
+
 		} catch (SQLException e) {
 			try {
 				dbconn.rollback();
@@ -170,9 +227,9 @@ public class BoutiqueCoffee {
 			e.printStackTrace();
 			return -1;
 		}
-		return 1;
 	}
 
+	//@return a list of ID of all coffees in the database. It returns an empty list if no coffee is in the database or the operation failed
 	public List<Integer> getCoffees() {
 		List<Integer> coffees = new ArrayList<Integer>();
 		try {
@@ -183,33 +240,49 @@ public class BoutiqueCoffee {
 				coffees.add(results.getInt(1));
 			}
 		} catch (SQLException e) {
-
-			return null;
+			System.out.println(e);
 		}
 		return coffees;
 
 	}
 
+	//@return a list of ID of all coffees, each of which has both keywords in its name, in the database. It returns an empty
+	//list if no coffee satisfying the conditions is in the database or the operation failed
 	public List<Integer> getCoffeesByKeywords(String keyword1, String keyword2) {
-
-		return null;
+		List<Integer> coffeeList = new ArrayList<Integer>();
+		try{
+			CallableStatement stmt = dbconn.prepareCall("BEGIN FIND_COFFEE_BY_DESC(?,?,?); END;");
+			stmt.setString(1,keyword1);
+			stmt.setString(2,keyword2);
+			stmt.registerOutParameter(3, OracleTypes.CURSOR);
+			stmt.execute();
+			ResultSet resultSet= ((OracleCallableStatement)stmt).getCursor(3);
+			while(resultSet.next()){
+			System.out.println(resultSet.getInt("COFFEE_ID"));
+			coffeeList.add(resultSet.getInt("COFFEE_ID"));
+			}
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return coffeeList;
 	}
 
-	public double getPointsByCustomerId(int customerId) throws SQLException {
+
+	//@return the total points of the customer identified by the customerId or -1 if the operation is not possible or failed
+	public double getPointsByCustomerId(int customerId) {
 		ResultSet results = null;
 		try {
 			statement = dbconn.createStatement();
 			String query = "SELECT TOTAL_POINTS FROM CUSTOMER WHERE Customer_id = "+customerId;
 			results = statement.executeQuery(query);
+			if(results.next()) return results.getInt(1);
 		} catch (SQLException e) {
-			return -1;
+			System.out.println(e);
 		}
-		if(results.next())
-			return results.getInt(1);
-		return -1 ;
-
+		return -1;
 	}
 
+	//Need to add into a list and return.
 	public List<Integer> getTopKStoresInPastXMonth(int k, int x) {
 		try {
 			Calendar cal = Calendar.getInstance();
@@ -257,6 +330,7 @@ public class BoutiqueCoffee {
 		return null;
 	}
 
+	//Need to add to a list and return
 	public List<Integer> getTopKCustomersInPastXMonth(int k, int x) {
 		try {
 			Calendar cal = Calendar.getInstance();
@@ -293,6 +367,37 @@ public class BoutiqueCoffee {
 
 	public static void main(String[] args) {
 		BoutiqueCoffee db = new BoutiqueCoffee();
-		db.getTopKCustomersInPastXMonth(1,78);
+		//System.out.println(db.addStore("New Store","Liberty Avenue","Test",300,500));
+		//System.out.println(db.addCoffee("Testfee","Fortnite Cena Johnny", 3, 50.3, 2, 2));
+
+		//Testing addPromotion
+		//Date dateNow = Calendar.getInstance().getTime();//intialize your date to any date
+		//Date dateBefore = new Date(dateNow.getTime() - 30 * 24 * 3600 * 1000  );
+		//System.out.println(db.addPromotion("Not Recently Added", dateBefore, dateNow));
+
+		//System.out.println(db.addMemberLevel("Testing Member Level", 54.3));
+
+		//System.out.println(db.addCustomer("John", "Cena", "FortniteHero@GG.EZ", 2, 3001));
+
+		//List<Integer> coffee = db.getCoffees();
+		//for(int i = 0; i<coffee.size(); i++){
+		//	System.out.println(coffee.get(i));
+		//}
+
+
+		//List<Integer> coffeeList = db.getCoffeesByKeywords("Free","Fortnite");
+		//System.out.println("First Call: None should print");
+		//for(int i = 0; i<coffeeList.size(); i++){
+		//	System.out.println(coffeeList.get(i));
+		//}
+		//System.out.println("Second Call: Something should print");
+		//db.getCoffeesByKeywords("Cena","Fortnite");
+		//for(int i = 0; i<coffeeList.size(); i++){
+		//	System.out.println(coffeeList.get(i));
+		//}
+
+		//db.getTopKCustomersInPastXMonth(1,78);
+
+		//System.out.println(db.getPointsByCustomerId(8));
 	}
 }
