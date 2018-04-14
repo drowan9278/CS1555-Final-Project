@@ -27,7 +27,10 @@ create table Coffee (
 	Price float,
 	Reward_Points float,
 	Redeem_Points float,
-	Constraint COFFEE_PK primary key (Coffee_ID)
+	Constraint COFFEE_PK primary key (Coffee_ID),
+    CONSTRAINT price CHECK (Price >0),
+    CONSTRAINT intenseCK CHECK (Intensity >=0),
+    CONSTRAINT points_Check CHECK(Reward_Points >=0 AND Redeem_Points >=0)
 );
 
 create table Promotion (
@@ -96,5 +99,7 @@ CREATE TABLE BuyCoffee(
     Redeem_Quantity int,
     CONSTRAINT buycoffeePK PRIMARY KEY (Purchase_ID,Coffee_ID),
     CONSTRAINT purchaseidFK FOREIGN KEY (Purchase_ID) REFERENCES Purchase(Purchase_ID),
-    CONSTRAINT coffeeidFK FOREIGN KEY (Coffee_ID) REFERENCES Coffee(Coffee_ID)
+    CONSTRAINT coffeeidFK FOREIGN KEY (Coffee_ID) REFERENCES Coffee(Coffee_ID),
+    CONSTRAINT coffeAmt_CK CHECK (Purchase_Quantity >= 0),
+    CONSTRAINT redeem_ck CHECK (Redeem_Quantity >= 0)
 );
