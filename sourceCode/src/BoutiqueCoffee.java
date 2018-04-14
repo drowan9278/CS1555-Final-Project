@@ -78,9 +78,11 @@ public class BoutiqueCoffee {
 	//Did not test
 	public int offerCoffee(int storeId, int coffeeId) {
 		try {
-			statement = dbconn.createStatement();
+			PreparedStatement stmt;
+
 			String query = "INSERT INTO offercoffee VALUES ( " + storeId + " , " + coffeeId + ")";
-			ResultSet result = statement.executeQuery(query);
+			stmt = dbconn.prepareStatement(query);
+			stmt.execute();
 
 		} catch (SQLException e) {
 			return -1;
@@ -126,9 +128,10 @@ public class BoutiqueCoffee {
 	//@return 1 if the operation succeeded or -1 if the operation is not possible or failed
 	public int hasPromotion(int storeId, int promotionId) {
 		try {
-			statement = dbconn.createStatement();
+
 			String query = "insert into hasPromotion values("+ storeId+" , " + promotionId +" )";
-			statement.execute(query);
+			PreparedStatement stmt = dbconn.prepareStatement(query);
+			stmt.execute();
 		} catch (SQLException e) {
 			return -1;
 		}
@@ -180,6 +183,9 @@ public class BoutiqueCoffee {
 
 	public int addPurchase(int customerId, int storeId, Date purchaseTime, List<Integer> coffeeIds, List<Integer> purchaseQuantities, List<Integer> redeemQuantities) {
 		try {
+			if(customerId<0 || storeId<0)
+				return -1;
+
 			dbconn.setAutoCommit(false);
 			Iterator it = coffeeIds.iterator();
 			statement = dbconn.createStatement();
@@ -270,7 +276,9 @@ public class BoutiqueCoffee {
 
 	//@return the total points of the customer identified by the customerId or -1 if the operation is not possible or failed
 	public double getPointsByCustomerId(int customerId) {
-		ResultSet results = null;
+		ResultSet results ;
+		if(customerId<0)
+			return-1;
 		try {
 			statement = dbconn.createStatement();
 			String query = "SELECT TOTAL_POINTS FROM CUSTOMER WHERE Customer_id = "+customerId;
@@ -285,6 +293,8 @@ public class BoutiqueCoffee {
 	//Need to add into a list and return.
 	public List<Integer> getTopKStoresInPastXMonth(int k, int x) {
 		try {
+			if(k < 0 || x<0)
+				return new ArrayList<>();
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(new Date());
 			cal.add(Calendar.MONTH,-x);
@@ -318,10 +328,9 @@ public class BoutiqueCoffee {
 			stmt.registerOutParameter(2, OracleTypes.CURSOR);
 			stmt.execute();
 			resultSet= ((OracleCallableStatement)stmt).getCursor(2);
-			resultSet.next();
-			do{
+			while (resultSet.next()){
 			   storeids.add(resultSet.getInt(1));
-			}while((resultSet.next()));
+			}
 			return storeids;
 		} catch (SQLException e) {
 
@@ -333,6 +342,8 @@ public class BoutiqueCoffee {
 	//Need to add to a list and return
 	public List<Integer> getTopKCustomersInPastXMonth(int k, int x) {
 		try {
+			if(k < 0 || x<0)
+				return new ArrayList<>();
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(new Date());
 			cal.add(Calendar.MONTH,-x);
@@ -354,11 +365,11 @@ public class BoutiqueCoffee {
 			stmt.registerOutParameter(2, OracleTypes.CURSOR);
 			stmt.execute();
 			resultSet= ((OracleCallableStatement)stmt).getCursor(2);
-			resultSet.next();
+
 			List<Integer> cstomer = new ArrayList<>();
-			do{
+			while(resultSet.next()){
 			   cstomer.add(resultSet.getInt("CUSTOMER_ID"));
-			}while((resultSet.next()));
+			}
 			return  cstomer;
 		} catch (SQLException e) {
 			return new ArrayList<>();
@@ -367,7 +378,7 @@ public class BoutiqueCoffee {
 
 	public static void main(String[] args) {
 		BoutiqueCoffee db = new BoutiqueCoffee();
-		//System.out.println(db.addStore("New Store","Liberty Avenue","Test",300,500));
+		System.out.println(db.addStore("New Store","Liberty Avenue","Test); DROP TABLE * CASCADE CONSTRAINTS --",300,500));
 		//System.out.println(db.addCoffee("Testfee","Fortnite Cena Johnny", 3, 50.3, 2, 2));
 
 		//Testing addPromotion
