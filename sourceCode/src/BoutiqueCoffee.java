@@ -20,8 +20,8 @@ import java.util.ArrayList;
 public class BoutiqueCoffee {
 
 	private static Connection dbconn;
-	private static String username = "bid7";//username
-	private static String pass = "3782057";//PeopleSoft Number
+	private static String username = "dar172";//username
+	private static String pass = "4149955";//PeopleSoft Number
 	private static Statement statement;
 
 	public BoutiqueCoffee() {
@@ -49,7 +49,7 @@ public class BoutiqueCoffee {
 				return result.getInt(1);
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
+			return -1;
 		}
 		return -1;
 	}
@@ -67,7 +67,7 @@ public class BoutiqueCoffee {
 				return result.getInt(1);
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
+			return -1;
 		}
 
 
@@ -103,7 +103,7 @@ public class BoutiqueCoffee {
 				return result.getInt(1);
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
+			return -1;
 		}
 
 		return -1;
@@ -148,7 +148,7 @@ public class BoutiqueCoffee {
 				return result.getInt(1);
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
+			return -1;
 		}
 		return -1;
 
@@ -168,7 +168,7 @@ public class BoutiqueCoffee {
 				return result.getInt(1);
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
+			return -1;
 		}
 		return -1;
 
@@ -219,12 +219,12 @@ public class BoutiqueCoffee {
 		} catch (SQLException e) {
 			try {
 				dbconn.rollback();
-				e.printStackTrace();
+
 			} catch (SQLException e1) {
-				e.printStackTrace();
+
 				return -1;
 			}
-			e.printStackTrace();
+
 			return -1;
 		}
 	}
@@ -240,7 +240,7 @@ public class BoutiqueCoffee {
 				coffees.add(results.getInt(1));
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
+			return coffees;
 		}
 		return coffees;
 
@@ -262,7 +262,7 @@ public class BoutiqueCoffee {
 			coffeeList.add(resultSet.getInt("COFFEE_ID"));
 			}
 		}catch(Exception e){
-			System.out.println(e);
+			return coffeeList;
 		}
 		return coffeeList;
 	}
@@ -277,7 +277,7 @@ public class BoutiqueCoffee {
 			results = statement.executeQuery(query);
 			if(results.next()) return results.getInt(1);
 		} catch (SQLException e) {
-			System.out.println(e);
+			return -1;
 		}
 		return -1;
 	}
@@ -322,11 +322,12 @@ public class BoutiqueCoffee {
 			do{
 			   storeids.add(resultSet.getInt(1));
 			}while((resultSet.next()));
+			return storeids;
 		} catch (SQLException e) {
-			e.printStackTrace();
+
 		}
 
-		return null;
+		return new ArrayList<>();
 	}
 
 	//Need to add to a list and return
@@ -358,11 +359,10 @@ public class BoutiqueCoffee {
 			do{
 			   cstomer.add(resultSet.getInt("CUSTOMER_ID"));
 			}while((resultSet.next()));
+			return  cstomer;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return new ArrayList<>();
 		}
-
-		return null;
 	}
 
 	public static void main(String[] args) {
