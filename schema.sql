@@ -9,6 +9,7 @@ drop table HasPromotion cascade constraints;
 drop table PromoteFor cascade constraints;
 drop table BuyCoffee cascade constraints;
 
+
 create table Store (
 	Store_ID  int,
 	Name	varchar2(20),
@@ -103,3 +104,4 @@ CREATE TABLE BuyCoffee(
     CONSTRAINT coffeAmt_CK CHECK (Purchase_Quantity >= 0),
     CONSTRAINT redeem_ck CHECK (Redeem_Quantity >= 0)
 );
+SET CONSTRAINT ALL IMMEDIATE;
