@@ -1,5 +1,3 @@
-
-
 import oracle.jdbc.OracleCallableStatement;
 import oracle.jdbc.OracleType;
 import oracle.jdbc.OracleTypes;
@@ -16,7 +14,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
- * This was created for CS1555 Final Project By Arie, Bin , and David
+ * This was created for CS1555 Final Project By Arie, Bin, and David
  * Team Number: P25
  */
 public class BoutiqueCoffee {
@@ -38,23 +36,30 @@ public class BoutiqueCoffee {
 		}
 	}
 
+	//@return the auto-generated ID of this store or -1 if the operation is not possible or failed
 	public int addStore(String name, String address, String storeType, long gpsLong, long gpsLat) {
 		try {
-			statement = dbconn.createStatement();
 			String query = "Insert Into Store values(1,'"+ name + "','" + address + "','" + storeType + "'," + gpsLong + "," + gpsLat + ")";
-			statement.executeQuery(query);
+			String returnID[] = { "Store_ID" };
+			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
+			ps.execute();
+			ResultSet result = ps.getGeneratedKeys();
+			if(result.next()) System.out.println(result.getInt(1));
 		} catch (SQLException e) {
-			return -1;
+			System.out.println(e);
 		}
-		return 1;
+		return -1;
 	}
 
-
+	//@return the auto-generated ID of this coffee or -1 if the operation is not possible or failed
 	public int addCoffee(String name, String description, int intensity,double price, double rewardPoints, double redeemPoints) {
 		try {
-			statement = dbconn.createStatement();
 			String query = "insert into Coffee values(1,'" + name + "','" + description + "'," + intensity + ","+price+"," + rewardPoints + "," + redeemPoints + ")";
-			statement.executeQuery(query);
+			String returnID[] = { "Coffee_ID" };
+			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
+			ps.execute();
+			ResultSet result = ps.getGeneratedKeys();
+			if(result.next()) System.out.println(result.getInt(1));
 		} catch (SQLException e) {
 
 			return -1;
@@ -64,6 +69,7 @@ public class BoutiqueCoffee {
 		return 1;
 	}
 
+	//@return 1 if the operation succeeded or -1 if the operation is not possible or failed
 	public int offerCoffee(int storeId, int coffeeId) {
 		try {
 			statement = dbconn.createStatement();
@@ -75,13 +81,19 @@ public class BoutiqueCoffee {
 		}
 		return 1;
 	}
-
+	//@return the auto-generated ID of this promotion or -1 if the operation is not possible or failed
 	public int addPromotion(String name, Date startDate, Date endDate) {
 		try {
-			statement = dbconn.createStatement();
-			String query = "insert into Promotion values(1,'" + name + "',to_date('" + startDate.toString() + "','DD-MON-YYYY HH24:MI:SS'), to_date('" + endDate.toString() + "','DD-MON-YYYY HH24:MI:SS') )";
-			statement.execute(query);
+			DateFormat df = new SimpleDateFormat("dd-MMM-YYYY HH:mm:ss");
+			String query = "insert into Promotion values(1,'" + name + "',to_date('" + df.format(startDate) + "','DD-MON-YYYY HH24:MI:SS'), to_date('" + df.format(endDate) + "','DD-MON-YYYY HH24:MI:SS') )";
+			String returnID[] = { "Promotion_ID" };
+			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
+			ps.execute();
+			ResultSet result = ps.getGeneratedKeys();
+			System.out.println("Here");
+			if(result.next()) System.out.println(result.getInt(1));
 		} catch (SQLException e) {
+			System.out.println(e);
 			return -1;
 		}
 
@@ -293,6 +305,15 @@ public class BoutiqueCoffee {
 
 	public static void main(String[] args) {
 		BoutiqueCoffee db = new BoutiqueCoffee();
-		db.getTopKCustomersInPastXMonth(1,78);
+		//System.out.println(db.addStore("New Store","Liberty Avenue","Test",300,500));
+		//System.out.println(db.addCoffee("Testfee","Test Adding", 3, 50.3, 2, 2));
+
+		//Testing addPromotion -- Test failed.
+		//TO-DO: Date needs to be converted to standard SQL date.
+		Date dateNow = Calendar.getInstance().getTime();//intialize your date to any date
+		Date dateBefore = new Date(dateNow.getTime() - 30 * 24 * 3600 * 1000  );
+		System.out.println(db.addPromotion("Not Recently Added", dateBefore, dateNow));
+
+		//db.getTopKCustomersInPastXMonth(1,78);
 	}
 }
