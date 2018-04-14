@@ -314,14 +314,13 @@ public class BoutiqueCoffee {
 			ResultSet resultSet;
 			CallableStatement stmt = dbconn.prepareCall("BEGIN STORE_EARNING_RANK(?,?); END;");
 			stmt.setInt(1,k);
-
+            List<Integer> storeids = new ArrayList<>();
 			stmt.registerOutParameter(2, OracleTypes.CURSOR);
 			stmt.execute();
 			resultSet= ((OracleCallableStatement)stmt).getCursor(2);
 			resultSet.next();
 			do{
-			   System.out.println("HERE!");
-			   System.out.println(resultSet.getInt("STOREID"));
+			   storeids.add(resultSet.getInt(1));
 			}while((resultSet.next()));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -355,8 +354,9 @@ public class BoutiqueCoffee {
 			stmt.execute();
 			resultSet= ((OracleCallableStatement)stmt).getCursor(2);
 			resultSet.next();
+			List<Integer> cstomer = new ArrayList<>();
 			do{
-			   System.out.println( resultSet.getInt("CUSTOMER_ID"));
+			   cstomer.add(resultSet.getInt("CUSTOMER_ID"));
 			}while((resultSet.next()));
 		} catch (SQLException e) {
 			e.printStackTrace();
