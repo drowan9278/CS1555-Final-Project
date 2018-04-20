@@ -75,7 +75,7 @@ public class BCbenchmark {
         Iterator it = list.iterator();
         while(it.hasNext() && it2.hasNext()){
             System.out.println("Top Customer: " + it.next());
-            System.out.println("Top Store" + it2.next());
+            System.out.println("Top Store:    " + it2.next());
         }
 
     }

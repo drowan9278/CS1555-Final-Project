@@ -62,7 +62,7 @@ public class BoutiqueCoffee {
 			dbconn.commit();
 			ResultSet result = ps.getGeneratedKeys();
 			if(result.next()){
-				System.out.println(result.getInt(1));
+
 				return result.getInt(1);
 			}
 		} catch (SQLException e) {
@@ -81,11 +81,11 @@ public class BoutiqueCoffee {
 			dbconn.commit();
 			ResultSet result = ps.getGeneratedKeys();
 			if(result.next()){
-				System.out.println(result.getInt(1));
+
 				return result.getInt(1);
 			}
 		} catch (SQLException e) {
-		    e.printStackTrace();
+
 			return -1;
 		}
 
@@ -119,9 +119,9 @@ public class BoutiqueCoffee {
 			ps.execute();
 			ResultSet result = ps.getGeneratedKeys();
 			dbconn.commit();
-			System.out.println("Here");
+
 			if(result.next()) {
-				System.out.println(result.getInt(1));
+
 				return result.getInt(1);
 			}
 		} catch (SQLException e) {
@@ -170,7 +170,7 @@ public class BoutiqueCoffee {
 			dbconn.commit();
 			ResultSet result = ps.getGeneratedKeys();
 			if(result.next()){
-				System.out.println(result.getInt(1));
+
 				return result.getInt(1);
 			}
 		} catch (SQLException e) {
@@ -191,7 +191,7 @@ public class BoutiqueCoffee {
 			dbconn.commit();
 			ResultSet result = ps.getGeneratedKeys();
 			if(result.next()) {
-				System.out.println(result.getInt(1));
+
 				return result.getInt(1);
 			}
 		} catch (SQLException e) {
@@ -231,7 +231,7 @@ public class BoutiqueCoffee {
 			dbconn.commit();
 			ResultSet result = ps.getGeneratedKeys();
 			if(result.next()) {
-				System.out.println(result.getInt(1));
+
 				purchaseID = result.getInt(1);
 			}
 
@@ -253,7 +253,7 @@ public class BoutiqueCoffee {
 				dbconn.rollback();
 
 			} catch (SQLException e1) {
-                e.printStackTrace();
+
 				return -1;
 			}
 
@@ -290,7 +290,7 @@ public class BoutiqueCoffee {
 			stmt.execute();
 			ResultSet resultSet= ((OracleCallableStatement)stmt).getCursor(3);
 			while(resultSet.next()){
-			System.out.println(resultSet.getInt("COFFEE_ID"));
+
 			coffeeList.add(resultSet.getInt("COFFEE_ID"));
 			}
 		}catch(Exception e){
