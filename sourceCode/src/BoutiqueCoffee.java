@@ -246,11 +246,12 @@ public class BoutiqueCoffee {
 			return purchaseID;
 
 		} catch (SQLException e) {
+		    e.printStackTrace();
 			try {
 				dbconn.rollback();
 
 			} catch (SQLException e1) {
-
+                e.printStackTrace();
 				return -1;
 			}
 
