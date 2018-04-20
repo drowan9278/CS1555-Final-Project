@@ -209,7 +209,7 @@ public class BoutiqueCoffee {
 		try {
 			if(customerId<0 || storeId<0)
 				return -1;
-
+            dbconn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			dbconn.setAutoCommit(false);
 			Iterator it = coffeeIds.iterator();
 			statement = dbconn.createStatement();
@@ -243,6 +243,7 @@ public class BoutiqueCoffee {
 				statement.executeQuery(query);
 			}
 			dbconn.commit();
+			dbconn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 
 
 			return purchaseID;
