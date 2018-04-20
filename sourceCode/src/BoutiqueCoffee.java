@@ -37,7 +37,8 @@ public class BoutiqueCoffee {
 			 url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
 
 			dbconn = DriverManager.getConnection(url, username, pass);
-			dbconn.setAutoCommit(true);
+			dbconn.setAutoCommit(false);
+			dbconn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -58,6 +59,7 @@ public class BoutiqueCoffee {
 			String returnID[] = { "Store_ID" };
 			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
 			ps.execute();
+			dbconn.commit();
 			ResultSet result = ps.getGeneratedKeys();
 			if(result.next()){
 				System.out.println(result.getInt(1));
@@ -76,6 +78,7 @@ public class BoutiqueCoffee {
 			String returnID[] = { "Coffee_ID" };
 			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
 			ps.execute();
+			dbconn.commit();
 			ResultSet result = ps.getGeneratedKeys();
 			if(result.next()){
 				System.out.println(result.getInt(1));
@@ -98,7 +101,7 @@ public class BoutiqueCoffee {
 			String query = "INSERT INTO offercoffee VALUES ( " + storeId + " , " + coffeeId + ")";
 			stmt = dbconn.prepareStatement(query);
 			stmt.execute();
-
+			dbconn.commit();
 		} catch (SQLException e) {
 			return -1;
 		}
@@ -114,6 +117,7 @@ public class BoutiqueCoffee {
 			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
 			ps.execute();
 			ResultSet result = ps.getGeneratedKeys();
+			dbconn.commit();
 			System.out.println("Here");
 			if(result.next()) {
 				System.out.println(result.getInt(1));
@@ -133,6 +137,7 @@ public class BoutiqueCoffee {
 			statement = dbconn.createStatement();
 			String query = "insert into promoteFor values("+ promotionId+" , " + coFFeeId +" )";
 			statement.execute(query);
+			dbconn.commit();
 		} catch (SQLException e) {
 		   return -1;
 		}
@@ -147,6 +152,7 @@ public class BoutiqueCoffee {
 			String query = "insert into hasPromotion values("+ storeId+" , " + promotionId +" )";
 			PreparedStatement stmt = dbconn.prepareStatement(query);
 			stmt.execute();
+			dbconn.commit();
 		} catch (SQLException e) {
 			return -1;
 		}
@@ -160,6 +166,7 @@ public class BoutiqueCoffee {
 			String returnID[] = { "MemberLevel_ID" };
 			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
 			ps.execute();
+			dbconn.commit();
 			ResultSet result = ps.getGeneratedKeys();
 			if(result.next()){
 				System.out.println(result.getInt(1));
@@ -180,6 +187,7 @@ public class BoutiqueCoffee {
 			String returnID[] = { "Customer_ID" };
 			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
 			ps.execute();
+			dbconn.commit();
 			ResultSet result = ps.getGeneratedKeys();
 			if(result.next()) {
 				System.out.println(result.getInt(1));
@@ -233,7 +241,7 @@ public class BoutiqueCoffee {
 				statement.executeQuery(query);
 			}
 			dbconn.commit();
-			dbconn.setAutoCommit(true);
+
 
 			return purchaseID;
 
@@ -298,6 +306,7 @@ public class BoutiqueCoffee {
 			statement = dbconn.createStatement();
 			String query = "SELECT TOTAL_POINTS FROM CUSTOMER WHERE Customer_id = "+customerId;
 			results = statement.executeQuery(query);
+			dbconn.commit();
 			if(results.next()) return results.getInt(1);
 		} catch (SQLException e) {
 			return -1;
@@ -343,6 +352,7 @@ public class BoutiqueCoffee {
             List<Integer> storeids = new ArrayList<>();
 			stmt.registerOutParameter(2, OracleTypes.CURSOR);
 			stmt.execute();
+			dbconn.commit();
 			resultSet= ((OracleCallableStatement)stmt).getCursor(2);
 			while (resultSet.next()){
 			   storeids.add(resultSet.getInt(1));
@@ -381,7 +391,7 @@ public class BoutiqueCoffee {
 			stmt.registerOutParameter(2, OracleTypes.CURSOR);
 			stmt.execute();
 			resultSet= ((OracleCallableStatement)stmt).getCursor(2);
-
+			dbconn.commit();
 			List<Integer> cstomer = new ArrayList<>();
 			while(resultSet.next()){
 			   cstomer.add(resultSet.getInt("CUSTOMER_ID"));
@@ -394,17 +404,17 @@ public class BoutiqueCoffee {
 
 	public static void main(String[] args) {
 		BoutiqueCoffee db = new BoutiqueCoffee();
-		System.out.println(db.addStore("New Store","Liberty Avenue","Test); DROP TABLE * CASCADE CONSTRAINTS --",300,500));
-		System.out.println(db.addCoffee("Testfee","Fortnite Cena Johnny", 3, 50.3, 2, 2));
+//		System.out.println(db.addStore("New Store","Liberty Avenue","Test); DROP TABLE * CASCADE CONSTRAINTS --",300,500));
+//		System.out.println(db.addCoffee("Testfee","Fortnite Cena Johnny", 3, 50.3, 2, 2));
+//
+//		//Testing addPromotion
+//		Date dateNow = Calendar.getInstance().getTime();//intialize your date to any date
+//		Date dateBefore = new Date(dateNow.getTime() - 30 * 24 * 3600 * 1000  );
+//		System.out.println(db.addPromotion("Not Recently Added", dateBefore, dateNow));
+//
+//		System.out.println(db.addMemberLevel("Testing Member Level", 54.3));
 
-		//Testing addPromotion
-		Date dateNow = Calendar.getInstance().getTime();//intialize your date to any date
-		Date dateBefore = new Date(dateNow.getTime() - 30 * 24 * 3600 * 1000  );
-		System.out.println(db.addPromotion("Not Recently Added", dateBefore, dateNow));
-
-		System.out.println(db.addMemberLevel("Testing Member Level", 54.3));
-
-		System.out.println(db.addCustomer("John", "Cena", "FortniteHero@GG.EZ", 2, 3001));
+		System.out.println(db.addCustomer("Johnnnnn", "Cena", "FortniteHero@GG.EZ", 2, 3001));
 
 		List<Integer> coffee = db.getCoffees();
 		for(int i = 0; i<coffee.size(); i++){
