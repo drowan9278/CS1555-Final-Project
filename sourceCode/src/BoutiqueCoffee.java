@@ -85,6 +85,7 @@ public class BoutiqueCoffee {
 				return result.getInt(1);
 			}
 		} catch (SQLException e) {
+		    e.printStackTrace();
 			return -1;
 		}
 
@@ -227,6 +228,7 @@ public class BoutiqueCoffee {
 			String returnID[] = { "Purchase_ID" };
 			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
 			ps.execute();
+			dbconn.commit();
 			ResultSet result = ps.getGeneratedKeys();
 			if(result.next()) {
 				System.out.println(result.getInt(1));
@@ -341,7 +343,7 @@ public class BoutiqueCoffee {
 									"WHERE BC.Purchase_Quantity > 0 AND P.PURCHASE_TIME>to_date('"+df.format(d)+"','DD-MON-YYYY HH24:MI:SS')) " +
 								"GROUP BY Store_ID " +
 								"ORDER BY TOTAL DESC";
-			System.out.println(query);
+
 
 			statement.executeQuery(query);
 

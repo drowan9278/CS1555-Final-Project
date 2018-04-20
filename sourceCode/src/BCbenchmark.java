@@ -16,7 +16,7 @@ public class BCbenchmark {
         BoutiqueCoffee db = new BoutiqueCoffee();
         //addCoffees
         for(int x = 0; x<21;x++){
-            int val = db.addCoffee("Coffee"+x,"Number: "+x,x,x*3.2,2 + x/10,10);
+            int val = db.addCoffee("Coffee"+x,"Number: "+x,x,x*3.2+1,2 + x/10,10);
             assert (val ==1);
             System.out.println(" Coffee: "+ val);
         }
@@ -40,7 +40,7 @@ public class BCbenchmark {
         List<Integer> redeem = new ArrayList<>();
         for(int x =0; x<20;x++){
             coffeeids.add(x+1);
-            quantity.add(x);
+            quantity.add(x+1);
             redeem.add(1);
         }
         for(int x = 0;x<5;x++){
@@ -52,6 +52,30 @@ public class BCbenchmark {
                 e.printStackTrace();
             }
             System.out.println("Purchase: " + db.addPurchase( + x+1,x+1,date,coffeeids,quantity,redeem));
+        }
+        for(int x = 0;x<20;x++){
+            Date date = null;
+            DateFormat df = new SimpleDateFormat("dd-MMM-YYYY HH:mm:ss");
+            try {
+                date = df.parse(x+"-FEB-2015 7:00:00");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+           System.out.println("Promo: "+ db.addPromotion("Promo"+x, date,date));
+        }
+        for(int x = 1; x<21;x++){
+           System.out.println("OfferCoffee: " + db.offerCoffee(x,x));
+           System.out.println("HasPromotion: " + db.hasPromotion(x,x));
+           System.out.println("PromoteFor: "+ db.promoteFor(x,x));
+        }
+
+        List list = db.getTopKCustomersInPastXMonth(4,72);
+        List slist = db.getTopKStoresInPastXMonth(4,72);
+        Iterator it2 = slist.iterator();
+        Iterator it = list.iterator();
+        while(it.hasNext() && it2.hasNext()){
+            System.out.println("Top Customer: " + it.next());
+            System.out.println("Top Store" + it2.next());
         }
 
     }
