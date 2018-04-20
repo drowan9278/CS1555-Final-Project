@@ -228,8 +228,9 @@ public class BoutiqueCoffee {
 			String returnID[] = { "Purchase_ID" };
 			PreparedStatement ps = dbconn.prepareStatement(query, returnID);
 			ps.execute();
-			dbconn.commit();
+
 			ResultSet result = ps.getGeneratedKeys();
+			dbconn.commit();
 			if(result.next()) {
 
 				purchaseID = result.getInt(1);
