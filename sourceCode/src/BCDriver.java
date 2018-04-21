@@ -75,5 +75,6 @@ public class BCDriver {
             System.out.println("Top Customer: " + it.next());
             System.out.println("Top Store:    " + it2.next());
         }
+        System.out.println("Customer Points: "+ db.getPointsByCustomerId(1) + " Coffee Keyword c and o id: "+ db.getCoffeesByKeywords("c","o"));
     }
 }
