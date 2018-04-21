@@ -408,39 +408,39 @@ public class BoutiqueCoffee {
 	}
 
 	public static void main(String[] args) {
-		BoutiqueCoffee db = new BoutiqueCoffee();
-//		System.out.println(db.addStore("New Store","Liberty Avenue","Test); DROP TABLE * CASCADE CONSTRAINTS --",300,500));
-//		System.out.println(db.addCoffee("Testfee","Fortnite Cena Johnny", 3, 50.3, 2, 2));
+//		BoutiqueCoffee db = new BoutiqueCoffee();
+////		System.out.println(db.addStore("New Store","Liberty Avenue","Test); DROP TABLE * CASCADE CONSTRAINTS --",300,500));
+////		System.out.println(db.addCoffee("Testfee","Fortnite Cena Johnny", 3, 50.3, 2, 2));
+////
+////		//Testing addPromotion
+////		Date dateNow = Calendar.getInstance().getTime();//intialize your date to any date
+////		Date dateBefore = new Date(dateNow.getTime() - 30 * 24 * 3600 * 1000  );
+////		System.out.println(db.addPromotion("Not Recently Added", dateBefore, dateNow));
+////
+////		System.out.println(db.addMemberLevel("Testing Member Level", 54.3));
 //
-//		//Testing addPromotion
-//		Date dateNow = Calendar.getInstance().getTime();//intialize your date to any date
-//		Date dateBefore = new Date(dateNow.getTime() - 30 * 24 * 3600 * 1000  );
-//		System.out.println(db.addPromotion("Not Recently Added", dateBefore, dateNow));
+//		System.out.println(db.addCustomer("Johnnnnn", "Cena", "FortniteHero@GG.EZ", 2, 3001));
 //
-//		System.out.println(db.addMemberLevel("Testing Member Level", 54.3));
-
-		System.out.println(db.addCustomer("Johnnnnn", "Cena", "FortniteHero@GG.EZ", 2, 3001));
-
-		List<Integer> coffee = db.getCoffees();
-		for(int i = 0; i<coffee.size(); i++){
-			System.out.println(coffee.get(i));
-		}
-
-
-		List<Integer> coffeeList = db.getCoffeesByKeywords("Free","Fortnite");
-		System.out.println("First Call: None should print");
-		for(int i = 0; i<coffeeList.size(); i++){
-			System.out.println(coffeeList.get(i));
-		}
-		System.out.println("Second Call: Something should print");
-		db.getCoffeesByKeywords("Cena","Fortnite");
-		for(int i = 0; i<coffeeList.size(); i++){
-			System.out.println(coffeeList.get(i));
-		}
-
-		db.getTopKCustomersInPastXMonth(1,78);
-
-		System.out.println(db.getPointsByCustomerId(8));
-		db.closeConn();
+//		List<Integer> coffee = db.getCoffees();
+//		for(int i = 0; i<coffee.size(); i++){
+//			System.out.println(coffee.get(i));
+//		}
+//
+//
+//		List<Integer> coffeeList = db.getCoffeesByKeywords("Free","Fortnite");
+//		System.out.println("First Call: None should print");
+//		for(int i = 0; i<coffeeList.size(); i++){
+//			System.out.println(coffeeList.get(i));
+//		}
+//		System.out.println("Second Call: Something should print");
+//		db.getCoffeesByKeywords("Cena","Fortnite");
+//		for(int i = 0; i<coffeeList.size(); i++){
+//			System.out.println(coffeeList.get(i));
+//		}
+//
+//		db.getTopKCustomersInPastXMonth(1,78);
+//
+//		System.out.println(db.getPointsByCustomerId(8));
+//		db.closeConn();
 	}
 }

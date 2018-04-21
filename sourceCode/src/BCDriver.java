@@ -75,6 +75,18 @@ public class BCDriver {
             System.out.println("Top Customer: " + it.next());
             System.out.println("Top Store:    " + it2.next());
         }
-        System.out.println("Customer Points: "+ db.getPointsByCustomerId(1) + " Coffee Keyword c and o id: "+ db.getCoffeesByKeywords("c","o"));
+        System.out.println("Customer Points: "+ db.getPointsByCustomerId(1));
+        list = db.getCoffeesByKeywords("c","o");
+        it2 = list.iterator();
+        while(it2.hasNext()){
+            System.out.println("Coffee Keywork: "+it2.next());
+        }
+        list = db.getCoffees();
+        it2 = list.iterator();
+        while(it2.hasNext()){
+            System.out.println("Coffee ID " + it2.next());
+        }
+
+
     }
 }

@@ -77,6 +77,16 @@ public class BCbenchmark {
         }
 
         System.out.println("Customer Points: "+ db.getPointsByCustomerId(1) + " Coffee Keyword c and o id: "+ db.getCoffeesByKeywords("c","o"));
+        list = db.getCoffeesByKeywords("c","o");
+        it2 = list.iterator();
+        while(it2.hasNext()){
+            System.out.println("Coffee Keywork: "+it2.next());
+        }
+        list = db.getCoffees();
+        it2 = list.iterator();
+        while(it2.hasNext()){
+            System.out.println("Coffee ID " + it2.next());
+        }
 
     }
 }
